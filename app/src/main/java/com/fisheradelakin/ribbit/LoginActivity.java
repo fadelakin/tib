@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,8 +31,12 @@ public class LoginActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_login);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
 
         mSignUpTextView = (TextView) (findViewById(R.id.signUpText));
         mSignUpTextView.setOnClickListener(new View.OnClickListener() {
@@ -64,12 +69,11 @@ public class LoginActivity extends ActionBarActivity {
                     dialog.show();
                 } else {
                     //login
-                    setSupportProgressBarIndeterminateVisibility(true);
                     ParseUser.logInInBackground(username, password, new LogInCallback() {
                         @Override
                         public void done(ParseUser parseUser, ParseException e) {
                             setSupportProgressBarIndeterminateVisibility(false);
-                            
+
                             if(e == null) {
                                 // success
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);

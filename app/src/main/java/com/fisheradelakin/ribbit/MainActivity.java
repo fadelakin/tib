@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.parse.ParseUser;
@@ -43,6 +44,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     public static final int FILE_SIZE_LIMIT = 1024*1024*10; // 10MB
 
     protected Uri mMediaUri;
+
+    protected ProgressBar mProgressBar;
 
     protected DialogInterface.OnClickListener mDialogListener = new DialogInterface.OnClickListener() {
         @Override
@@ -170,6 +173,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         } else {
             Log.i(TAG, currentUser.getUsername());
         }
+
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_spinner);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.

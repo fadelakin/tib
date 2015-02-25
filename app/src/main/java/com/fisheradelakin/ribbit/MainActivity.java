@@ -307,6 +307,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 builder.setItems(R.array.camera_choices, mDialogListener);
                 AlertDialog dialog = builder.create();
                 dialog.show();
+                break;
         }
 
         return super.onOptionsItemSelected(item);

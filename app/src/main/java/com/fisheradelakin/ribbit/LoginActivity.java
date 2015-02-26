@@ -31,6 +31,7 @@ public class LoginActivity extends ActionBarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
+            getSupportActionBar().hide(); // hide the toolbar.
         }
 
         mSignUpTextView = (TextView) (findViewById(R.id.signUpText));

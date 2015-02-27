@@ -199,6 +199,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 return 0;
             }
         });
+
         mSlidingTabLayout.setViewPager(mViewPager);
     }
 

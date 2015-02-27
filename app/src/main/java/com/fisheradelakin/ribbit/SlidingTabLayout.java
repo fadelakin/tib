@@ -192,11 +192,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
             textView.setBackgroundResource(outValue.resourceId);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            // If we're running on ICS or newer, enable all-caps to match the Action Bar tab style
-            textView.setAllCaps(true);
-        }
-
         int padding = (int) (TAB_VIEW_PADDING_DIPS * getResources().getDisplayMetrics().density);
         textView.setPadding(padding, padding, padding, padding);
 
@@ -249,7 +244,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             mTabStrip.addView(tabView);
 
             if (tabTitleView != null) {
-                tabTitleView.setTextColor(getResources().getColorStateList(R.color.selector));
+                tabTitleView.setTextColor(getResources().getColorStateList(android.R.color.white));
             }
             if (tabTitleView != null) {
                 tabTitleView.setTextSize(14);

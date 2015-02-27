@@ -5,9 +5,13 @@ package com.fisheradelakin.ribbit;
  */
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 
 import java.util.Locale;
 
@@ -45,15 +49,18 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         return 2;
     }
 
+    private int[] imageResId = {
+            R.drawable.ic_tab_inbox,
+            R.drawable.ic_tab_friends
+    };
+
     @Override
     public CharSequence getPageTitle(int position) {
-        Locale l = Locale.getDefault();
-        switch (position) {
-            case 0:
-                return mContext.getString(R.string.title_section1).toUpperCase(l);
-            case 1:
-                return mContext.getString(R.string.title_section2).toUpperCase(l);
-        }
-        return null;
+        Drawable image = mContext.getResources().getDrawable(imageResId[position]);
+        image.setBounds(0, 0, ((int) (image.getIntrinsicWidth() / 1.5)), ((int) (image.getIntrinsicHeight() / 1.5)));
+        SpannableString sb = new SpannableString(" ");
+        ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
+        sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return sb;
     }
 }

@@ -3,8 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:context="com.fisheradelakin.ribbit.SignUpActivity"
-                style="@style/AuthBackground"
-                android:id="@+id/">
+                style="@style/AuthBackground">
 
     <ImageView
         android:id="@+id/backgroundImage"

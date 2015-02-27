@@ -3,8 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:context="com.fisheradelakin.ribbit.SignUpActivity"
-                style="@style/AuthBackground"
-                android:id="@+id/">
+                style="@style/AuthBackground">
 
     <ImageView
         android:id="@+id/backgroundImage"
@@ -13,11 +12,14 @@
 
     <TextView
         android:id="@+id/title"
-        style="@style/AuthTitle"/>
+        style="@style/AuthTitle"
+        android:layout_marginTop="180dp"/>
 
     <LinearLayout
         android:id="@+id/fieldsContainer"
-        style="@style/AuthFieldContainer">
+        style="@style/AuthFieldContainer"
+        android:layout_width="400dp"
+        android:layout_centerHorizontal="true">
 
 
         <EditText
@@ -57,11 +59,12 @@
         android:text="@string/sign_up_button_label"
         style="@style/AuthButton"
         android:layout_below="@id/fieldsContainer"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_alignLeft="@id/fieldsContainer"
+        android:layout_alignStart="@id/fieldsContainer"
         android:layout_toLeftOf="@id/buttonDivider"
         android:layout_toStartOf="@id/buttonDivider"
         android:layout_marginRight="0dp"
+        android:layout_marginLeft="0dp"
         android:layout_marginEnd="0dp"/>
 
     <Button
@@ -69,10 +72,11 @@
         android:text="@string/cancel_button_label"
         style="@style/AuthButton"
         android:layout_below="@id/fieldsContainer"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
+        android:layout_alignRight="@id/fieldsContainer"
+        android:layout_alignEnd="@id/fieldsContainer"
         android:layout_toRightOf="@id/buttonDivider"
         android:layout_toEndOf="@id/buttonDivider"
         android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:layout_marginStart="0dp"/>
 </RelativeLayout>

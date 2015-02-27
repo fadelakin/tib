@@ -15,7 +15,7 @@
     <string name="sign_up_text">Don\'t have an account? Sign up!</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="email_hint">email</string>
-    <string name="sign_up_button_label">Sign Up</string>
+    <string name="sign_up_button_label">SIGN UP</string>
 
     <string name="signup_error_message">Please make sure you enter a username, password and email address</string>
     <string name="signup_error_title">Oops!</string>
@@ -54,4 +54,6 @@
     <string name="image">image</string>
     <string name="ribbit_background_login_image">background image</string>
     <string name="subtitle">A Treehouse Project</string>
+    <string name="cancel_button_label">CANCEL</string>
+    <string name="button_divider_content_description">Button divider</string>
 </resources>

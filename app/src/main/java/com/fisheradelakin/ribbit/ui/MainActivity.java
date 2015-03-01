@@ -1,4 +1,4 @@
-package com.fisheradelakin.ribbit;
+package com.fisheradelakin.ribbit.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,6 +19,10 @@ import android.view.MenuItem;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.fisheradelakin.ribbit.utils.ParseConstants;
+import com.fisheradelakin.ribbit.R;
+import com.fisheradelakin.ribbit.adapters.SectionsPagerAdapter;
+import com.fisheradelakin.ribbit.utils.SlidingTabLayout;
 import com.parse.ParseUser;
 
 import java.io.File;

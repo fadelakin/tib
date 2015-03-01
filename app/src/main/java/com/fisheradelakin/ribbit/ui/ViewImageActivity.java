@@ -1,4 +1,4 @@
-package com.fisheradelakin.ribbit;
+package com.fisheradelakin.ribbit.ui;
 
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.fisheradelakin.ribbit.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.Timer;

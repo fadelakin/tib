@@ -1,4 +1,4 @@
-package com.fisheradelakin.ribbit;
+package com.fisheradelakin.ribbit.ui;
 
 import android.app.AlertDialog;
 import android.net.Uri;
@@ -17,6 +17,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.fisheradelakin.ribbit.utils.FileHelper;
+import com.fisheradelakin.ribbit.utils.ParseConstants;
+import com.fisheradelakin.ribbit.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;

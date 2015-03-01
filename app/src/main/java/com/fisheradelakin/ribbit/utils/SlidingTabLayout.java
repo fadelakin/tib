@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.fisheradelakin.ribbit;
+package com.fisheradelakin.ribbit.utils;
 
 import android.content.Context;
 import android.graphics.Point;

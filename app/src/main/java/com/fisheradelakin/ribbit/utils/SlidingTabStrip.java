@@ -1,4 +1,4 @@
-package com.fisheradelakin.ribbit;
+package com.fisheradelakin.ribbit.utils;
 
 /*
  * Created by Fisher on 2/20/15.

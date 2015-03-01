@@ -1,4 +1,4 @@
-package com.fisheradelakin.ribbit;
+package com.fisheradelakin.ribbit.adapters;
 
 /*
  * Created by Fisher on 2/20/15.
@@ -13,7 +13,9 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 
-import java.util.Locale;
+import com.fisheradelakin.ribbit.R;
+import com.fisheradelakin.ribbit.ui.FriendsFragment;
+import com.fisheradelakin.ribbit.ui.InboxFragment;
 
 /**
  * A {@link android.support.v4.app.FragmentPagerAdapter} that returns a fragment corresponding to

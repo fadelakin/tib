@@ -1,4 +1,4 @@
-package com.fisheradelakin.ribbit;
+package com.fisheradelakin.ribbit.utils;
 
 import java.io.ByteArrayOutputStream;
 

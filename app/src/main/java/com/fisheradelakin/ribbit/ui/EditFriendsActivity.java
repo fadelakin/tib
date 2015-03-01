@@ -1,16 +1,17 @@
-package com.fisheradelakin.ribbit;
+package com.fisheradelakin.ribbit.ui;
 
 import android.app.AlertDialog;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.fisheradelakin.ribbit.utils.ParseConstants;
+import com.fisheradelakin.ribbit.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;

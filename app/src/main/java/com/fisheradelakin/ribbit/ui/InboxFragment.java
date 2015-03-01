@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.fisheradelakin.ribbit.adapters.MessageAdapter;
 import com.fisheradelakin.ribbit.utils.ParseConstants;
@@ -28,16 +30,19 @@ import java.util.List;
 public class InboxFragment extends ListFragment {
 
     protected List<ParseObject> mMessages;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // in the case i don't understand what the return state is doing
-        // it's returning the line of code that's commented out.
-        // View rootView = inflater.inflate(R.layout.fragment_inbox, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_inbox, container, false);
 
-        return inflater.inflate(R.layout.fragment_inbox, container, false);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
+        mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.swipeRefresh1, R.color.swipeRefresh2, R.color.swipeRefresh3, R.color.swipeRefresh4);
+
+        return rootView;
     }
 
     @Override
@@ -46,6 +51,10 @@ public class InboxFragment extends ListFragment {
 
         getActivity().setProgressBarIndeterminateVisibility(true);
 
+        retrieveMessages();
+    }
+
+    private void retrieveMessages() {
         ParseQuery<ParseObject> query = new ParseQuery<>(ParseConstants.CLASS_MESSAGES);
         query.whereEqualTo(ParseConstants.KEY_RECIPIENT_IDS, ParseUser.getCurrentUser().getObjectId());
         query.addDescendingOrder(ParseConstants.KEY_CREATED_AT);
@@ -54,6 +63,10 @@ public class InboxFragment extends ListFragment {
             public void done(List<ParseObject> messages, ParseException e) {
 
                 getActivity().setProgressBarIndeterminateVisibility(false);
+
+                if(mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
 
                 if(e == null) {
                     // we found message!
@@ -116,4 +129,11 @@ public class InboxFragment extends ListFragment {
             message.saveInBackground();
         }
     }
+
+    protected SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            retrieveMessages();
+        }
+    };
 }

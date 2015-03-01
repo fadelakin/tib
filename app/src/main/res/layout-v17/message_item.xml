@@ -15,13 +15,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/messageIcon"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingStart="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_picture"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:src="@drawable/ic_action_picture"
             android:contentDescription="@string/message_icon_content_description"/>
 
         <TextView
@@ -29,13 +27,11 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/senderLabel"
-            android:layout_toLeftOf="@id/messageIcon"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:paddingTop="@dimen/message_vertical_padding"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:layout_toStartOf="@+id/messageIcon"
-            android:textSize="16sp"/>
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:layout_toStartOf="@+id/messageIcon"/>
 
         <TextView
             android:id="@+id/timeLabel"
@@ -43,11 +39,10 @@
             android:layout_height="wrap_content"
             android:text="New Text"
             android:layout_below="@+id/senderLabel"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@id/messageIcon"
             android:layout_toStartOf="@id/messageIcon"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
             android:textSize="12sp"
             android:textColor="@color/light_grey"
             android:paddingBottom="@dimen/message_vertical_padding"/>

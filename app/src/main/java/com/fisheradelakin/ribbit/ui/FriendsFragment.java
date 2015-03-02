@@ -2,13 +2,17 @@ package com.fisheradelakin.ribbit.ui;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.TextView;
 
+import com.fisheradelakin.ribbit.adapters.UserAdapter;
 import com.fisheradelakin.ribbit.utils.ParseConstants;
 import com.fisheradelakin.ribbit.R;
 import com.parse.FindCallback;
@@ -22,23 +26,27 @@ import java.util.List;
 /*
  * Created by Fisher on 2/20/15.
  */
-public class FriendsFragment extends ListFragment {
+public class FriendsFragment extends Fragment {
 
     public static final String TAG = FriendsFragment.class.getSimpleName();
 
     protected List<ParseUser> mFriends;
     protected ParseRelation<ParseUser> mFriendsRelation;
     protected ParseUser mCurrentUser;
+    protected GridView mGridView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // in the case i don't understand what the return state is doing
-        // it's returning the line of code that's commented out.
-        // View rootView = inflater.inflate(R.layout.fragment_inbox, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_friends, container, false);
 
-        return inflater.inflate(R.layout.fragment_friends, container, false);
+        mGridView = (GridView) rootView.findViewById(R.id.friendsGrid);
+
+        TextView emptyTextView = (TextView) rootView.findViewById(android.R.id.empty);
+        mGridView.setEmptyView(emptyTextView);
+
+        return rootView;
     }
 
     @Override
@@ -62,13 +70,15 @@ public class FriendsFragment extends ListFragment {
                         usernames[i] = user.getUsername();
                         i++;
                     }
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getListView().getContext(),
-                            android.R.layout.simple_list_item_1,
-                            usernames);
-                    setListAdapter(adapter);
+                    if(mGridView.getAdapter() == null) {
+                        UserAdapter adapter = new UserAdapter(getActivity(), mFriends);
+                        mGridView.setAdapter(adapter);
+                    } else {
+                        ((UserAdapter) mGridView.getAdapter()).refill(friends);
+                    }
                 } else {
                     Log.e(TAG, e.getMessage());
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getListView().getContext());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setMessage(e.getMessage())
                             .setTitle(R.string.error_title)
                             .setPositiveButton(android.R.string.ok, null);

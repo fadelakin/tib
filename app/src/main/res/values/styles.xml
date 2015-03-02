@@ -12,11 +12,16 @@
         <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
 
         <item name="android:listViewStyle">@style/AppTheme.LightPurpleBackground</item>
-        <item name="android:gridViewStyle">@style/AppTheme.LightPurpleBackground</item>
+        <item name="android:gridViewStyle">@style/AppTheme.LightPurpleBackground.GridView</item>
     </style>
 
     <style name="AppTheme.LightPurpleBackground">
         <item name="android:background">@color/light_purple_background</item>
+        <item name="android:divider">@null</item>
+    </style>
+
+    <style name="AppTheme.LightPurpleBackground.GridView">
+        <item name="android:padding">@dimen/user_grid_spacing</item>
     </style>
 
     <style name="ThemeToolbarDarkOverflow" parent="AppTheme">

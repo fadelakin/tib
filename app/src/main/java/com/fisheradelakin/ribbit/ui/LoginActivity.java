@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.fisheradelakin.ribbit.R;
+import com.fisheradelakin.ribbit.RibbitApplication;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -73,6 +74,8 @@ public class LoginActivity extends ActionBarActivity {
 
                             if(e == null) {
                                 // success
+                                RibbitApplication.updateParseInstallation(parseUser);
+
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -2,21 +2,21 @@ package com.fisheradelakin.ribbit.ui;
 
 import android.app.AlertDialog;
 import android.net.Uri;
-import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fisheradelakin.ribbit.adapters.UserAdapter;
 import com.fisheradelakin.ribbit.utils.FileHelper;
 import com.fisheradelakin.ribbit.utils.ParseConstants;
 import com.fisheradelakin.ribbit.R;
@@ -35,10 +35,15 @@ import java.util.List;
 
 public class RecipientsActivity extends ActionBarActivity {
 
-    // TODO: move listview and listview click listener to activity and rework things
+    public static final String TAG = RecipientsActivity.class.getSimpleName();
 
+    protected static List<ParseUser> mFriends;
+    protected ParseRelation<ParseUser> mFriendsRelation;
+    protected ParseUser mCurrentUser;
+    protected MenuItem mSendMenuItem;
     protected Uri mMediaUri;
     protected String mFileType;
+    protected GridView mGridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,13 @@ public class RecipientsActivity extends ActionBarActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        mGridView = (GridView) findViewById(R.id.friendsGrid);
+        mGridView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        mGridView.setOnItemClickListener(mOnItemClickListener);
+
+        TextView emptyTextView = (TextView) findViewById(android.R.id.empty);
+        mGridView.setEmptyView(emptyTextView);
+
         mMediaUri = getIntent().getData();
         mFileType = getIntent().getExtras().getString(ParseConstants.KEY_FILE_TYPE);
     }
@@ -60,6 +72,7 @@ public class RecipientsActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_recipients, menu);
+        mSendMenuItem = menu.getItem(0);
         return true;
     }
 
@@ -137,99 +150,76 @@ public class RecipientsActivity extends ActionBarActivity {
 
     protected ArrayList<String> getRecipientIds() {
         ArrayList<String> recipientIds = new ArrayList<>();
-        ListView ls = (ListView) findViewById(android.R.id.list);
-        for(int i = 0; i < ls.getCount(); i++) {
-            if(ls.isItemChecked(i)) {
-                recipientIds.add(RecipientsFragment.getFriendsID(i));
+        for(int i = 0; i < mGridView.getCount(); i++) {
+            if(mGridView.isItemChecked(i)) {
+                recipientIds.add(getFriendsID(i));
             }
         }
         return recipientIds;
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class RecipientsFragment extends ListFragment {
+    public static String getFriendsID(int i) {
+        return mFriends.get(i).getObjectId();
+    }
 
-        public static final String TAG = RecipientsActivity.class.getSimpleName();
+    @Override
+    public void onResume() {
+        super.onResume();
 
-        protected static List<ParseUser> mFriends;
-        protected ParseRelation<ParseUser> mFriendsRelation;
-        protected ParseUser mCurrentUser;
-        protected MenuItem mSendMenuItem;
+        mCurrentUser = ParseUser.getCurrentUser();
+        mFriendsRelation = mCurrentUser.getRelation(ParseConstants.KEY_FRIENDS_RELATION);
+        ParseQuery<ParseUser> query = mFriendsRelation.getQuery();
+        query.addAscendingOrder(ParseConstants.KEY_USERNAME);
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> friends, ParseException e) {
+                if(e == null) {
+                    mFriends = friends;
 
-        public static String getFriendsID(int i) {
-            return mFriends.get(i).getObjectId();
-        }
+                    String[] usernames = new String[mFriends.size()];
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setHasOptionsMenu(true);
-        }
-
-        @Override
-        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            super.onCreateOptionsMenu(menu, inflater);
-
-            mSendMenuItem = menu.getItem(0);
-
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.fragment_recipients, container, false);
-        }
-
-        @Override
-        public void onResume() {
-            super.onResume();
-
-            mCurrentUser = ParseUser.getCurrentUser();
-            mFriendsRelation = mCurrentUser.getRelation(ParseConstants.KEY_FRIENDS_RELATION);
-            ParseQuery<ParseUser> query = mFriendsRelation.getQuery();
-            query.addAscendingOrder(ParseConstants.KEY_USERNAME);
-            query.findInBackground(new FindCallback<ParseUser>() {
-                @Override
-                public void done(List<ParseUser> friends, ParseException e) {
-                    if(e == null) {
-                        mFriends = friends;
-
-                        String[] usernames = new String[mFriends.size()];
-
-                        int i = 0;
-                        for (ParseUser user : mFriends) {
-                            usernames[i] = user.getUsername();
-                            i++;
-                        }
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(getListView().getContext(),
-                                android.R.layout.simple_list_item_checked,
-                                usernames);
-                        getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-                        setListAdapter(adapter);
-                    } else {
-                        Log.e(TAG, e.getMessage());
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getListView().getContext());
-                        builder.setMessage(e.getMessage())
-                                .setTitle(R.string.error_title)
-                                .setPositiveButton(android.R.string.ok, null);
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
+                    int i = 0;
+                    for (ParseUser user : mFriends) {
+                        usernames[i] = user.getUsername();
+                        i++;
                     }
+                    if(mGridView.getAdapter() == null) {
+                        UserAdapter adapter = new UserAdapter(RecipientsActivity.this, mFriends);
+                        mGridView.setAdapter(adapter);
+                    } else {
+                        ((UserAdapter) mGridView.getAdapter()).refill(mFriends);
+                    }
+                } else {
+                    Log.e(TAG, e.getMessage());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RecipientsActivity.this);
+                    builder.setMessage(e.getMessage())
+                            .setTitle(R.string.error_title)
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
-            });
-        }
+            }
+        });
+    }
 
+    protected AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
-        public void onListItemClick(ListView l, View v, int position, long id) {
-            super.onListItemClick(l, v, position, id);
-
-            if(l.getCheckedItemCount() > 0) {
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if(mGridView.getCheckedItemCount() > 0) {
                 mSendMenuItem.setVisible(true);
             } else {
                 mSendMenuItem.setVisible(false);
             }
+
+            ImageView checkImageView = (ImageView) view.findViewById(R.id.checkImageView);
+
+            if(mGridView.isItemChecked(position)) {
+                // add a recipient
+                checkImageView.setVisibility(View.VISIBLE);
+            } else {
+                // remove recipient
+                checkImageView.setVisibility(View.INVISIBLE);
+            }
         }
-    }
+    };
 }

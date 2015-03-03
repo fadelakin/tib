@@ -7,9 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fisheradelakin.ribbit.adapters.UserAdapter;
@@ -34,16 +33,10 @@ public class EditFriendsActivity extends ActionBarActivity {
     protected ParseUser mCurrentUser;
     protected GridView mGridView;
 
-    //private ListView friendsSearchList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_grid);
-
-        if(getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         if (toolbar != null) {
@@ -52,33 +45,11 @@ public class EditFriendsActivity extends ActionBarActivity {
         }
 
         mGridView = (GridView) findViewById(R.id.friendsGrid);
-
-        //friendsSearchList = (ListView) findViewById(R.id.friends_search_list);
         mGridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
+        mGridView.setOnItemClickListener(mOnItemClickListener);
 
         TextView emptyTextView = (TextView) findViewById(android.R.id.empty);
         mGridView.setEmptyView(emptyTextView);
-
-        /*friendsSearchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(friendsSearchList.isItemChecked(position)) {
-                    // add a friend
-                    mFriendsRelation.add(mUsers.get(position));
-                } else {
-                    // remove friend
-                    mFriendsRelation.remove(mUsers.get(position));
-                }
-                mCurrentUser.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if(e != null) {
-                            Log.e(TAG, e.getMessage());
-                        }
-                    }
-                });
-            }
-        });*/
     }
 
     @Override
@@ -146,4 +117,29 @@ public class EditFriendsActivity extends ActionBarActivity {
             }
         });
     }
+
+    protected AdapterView.OnItemClickListener mOnItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            ImageView checkImageView = (ImageView) view.findViewById(R.id.checkImageView);
+
+            if(mGridView.isItemChecked(position)) {
+                // add a friend
+                mFriendsRelation.add(mUsers.get(position));
+                checkImageView.setVisibility(View.VISIBLE);
+            } else {
+                // remove friend
+                mFriendsRelation.remove(mUsers.get(position));
+                checkImageView.setVisibility(View.INVISIBLE);
+            }
+            mCurrentUser.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if(e != null) {
+                        Log.e(TAG, e.getMessage());
+                    }
+                }
+            });
+        }
+    };
 }

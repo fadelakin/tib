@@ -8,8 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.fisheradelakin.ribbit.adapters.UserAdapter;
 import com.fisheradelakin.ribbit.utils.ParseConstants;
 import com.fisheradelakin.ribbit.R;
 import com.parse.FindCallback;
@@ -29,13 +32,18 @@ public class EditFriendsActivity extends ActionBarActivity {
     protected List<ParseUser> mUsers;
     protected ParseRelation<ParseUser> mFriendsRelation;
     protected ParseUser mCurrentUser;
+    protected GridView mGridView;
 
-    private ListView friendsSearchList;
+    //private ListView friendsSearchList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_friends);
+        setContentView(R.layout.user_grid);
+
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         if (toolbar != null) {
@@ -43,10 +51,15 @@ public class EditFriendsActivity extends ActionBarActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        friendsSearchList = (ListView) findViewById(R.id.friends_search_list);
-        friendsSearchList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        mGridView = (GridView) findViewById(R.id.friendsGrid);
 
-        friendsSearchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //friendsSearchList = (ListView) findViewById(R.id.friends_search_list);
+        mGridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE);
+
+        TextView emptyTextView = (TextView) findViewById(android.R.id.empty);
+        mGridView.setEmptyView(emptyTextView);
+
+        /*friendsSearchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(friendsSearchList.isItemChecked(position)) {
@@ -65,7 +78,7 @@ public class EditFriendsActivity extends ActionBarActivity {
                     }
                 });
             }
-        });
+        });*/
     }
 
     @Override
@@ -92,10 +105,12 @@ public class EditFriendsActivity extends ActionBarActivity {
                         usernames[i] = user.getUsername();
                         i++;
                     }
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(EditFriendsActivity.this,
-                            android.R.layout.simple_list_item_checked,
-                            usernames);
-                    friendsSearchList.setAdapter(adapter);
+                    if(mGridView.getAdapter() == null) {
+                        UserAdapter adapter = new UserAdapter(EditFriendsActivity.this, mUsers);
+                        mGridView.setAdapter(adapter);
+                    } else {
+                        ((UserAdapter) mGridView.getAdapter()).refill(mUsers);
+                    }
                     addFriendCheckmarks();
                 } else {
                     Log.e(TAG, e.getMessage());
@@ -121,7 +136,7 @@ public class EditFriendsActivity extends ActionBarActivity {
 
                         for(ParseUser friend : friends) {
                             if(friend.getObjectId().equals(user.getObjectId())) {
-                                friendsSearchList.setItemChecked(i, true);
+                                mGridView.setItemChecked(i, true);
                             }
                         }
                     }

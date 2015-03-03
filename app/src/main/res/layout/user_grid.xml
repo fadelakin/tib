@@ -4,12 +4,18 @@
                 android:layout_height="match_parent"
                 tools:context=".MainActivity$PlaceholderFragment">
 
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+
 
     <GridView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/friendsGrid"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:numColumns="auto_fit"
@@ -19,7 +25,8 @@
         android:verticalSpacing="@dimen/user_grid_spacing"
         android:clipToPadding="false"
         android:gravity="center"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tool_bar"/>
 
     <TextView
         android:layout_width="match_parent"

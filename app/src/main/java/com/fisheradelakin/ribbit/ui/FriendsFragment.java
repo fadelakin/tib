@@ -3,12 +3,11 @@ package com.fisheradelakin.ribbit.ui;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -39,7 +38,12 @@ public class FriendsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_friends, container, false);
+        View rootView = inflater.inflate(R.layout.user_grid, container, false);
+
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.tool_bar);
+        if (toolbar != null) {
+            toolbar.setVisibility(View.GONE);
+        }
 
         mGridView = (GridView) rootView.findViewById(R.id.friendsGrid);
 
@@ -74,7 +78,7 @@ public class FriendsFragment extends Fragment {
                         UserAdapter adapter = new UserAdapter(getActivity(), mFriends);
                         mGridView.setAdapter(adapter);
                     } else {
-                        ((UserAdapter) mGridView.getAdapter()).refill(friends);
+                        ((UserAdapter) mGridView.getAdapter()).refill(mFriends);
                     }
                 } else {
                     Log.e(TAG, e.getMessage());

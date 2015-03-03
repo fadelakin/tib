@@ -43,12 +43,7 @@ public class RecipientsActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipients);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new RecipientsFragment())
-                    .commit();
-        }
+        setContentView(R.layout.user_grid);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         if (toolbar != null) {

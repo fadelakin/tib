@@ -33,6 +33,7 @@ public class ViewImageActivity extends ActionBarActivity {
         Uri imageUri = getIntent().getData();
 
         // load image into imageview with picasso
+        // TODO: only start timer once imageview is loaded
         Picasso.with(this).load(imageUri.toString()).into(imageView);
 
         Timer timer = new Timer();
@@ -41,6 +42,6 @@ public class ViewImageActivity extends ActionBarActivity {
             public void run() {
                 finish();
             }
-        }, 10*1000);
+        }, 10*1000); // 10 secs.
     }
 }
